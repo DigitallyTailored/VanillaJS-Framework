@@ -1,6 +1,6 @@
 # Vanilla JS Web Framework
 
-Another attempt at a tiny Vanilla JS framework which is just over 1KB in size when compressed.
+Another attempt at a tiny Vanilla JS framework (no transpiler required) which is just over 1KB in size when compressed.
 
 As usual the aim is to facilitate reusable components whilst not drifting too far from normal JS syntax and HTML standards.
 
@@ -10,11 +10,11 @@ Unlike previous similar projects I've worked on, the driver of this framework is
 
 [ ] The script queue may be processed early (before the HTML is added) if using multiple asynchronous `a.render` calls. Make script queues unique to their caller 
 
-[ ] `v.refresh` method for regenerating a view with any updated variables. This will likely not support nested views.
+[ ] `v.refresh` helper method for regenerating a view with any updated variables. This will likely not support nested views.
 
 [ ] Make view object classes optional in case they're not needed.
 
-[ ] Move view styles to a separate output section. They are currently attached to the HTML output of each component
+[ ] Move view css to a separate output section. They are currently attached to the HTML output of each component
 
 **An Example of a View**
 
