@@ -35,34 +35,6 @@ v.selector //a css selector based on the unique id e.g. `.au-1` which could also
 v.output() //does not exist by default but is the recommended way to provide output from a view
 ```
 
-**Retrieving Child View Data**
-
-When a view is added and it's script ran, the actual HTML Element output by that view will hold a handy `this` variable that holds the view values. This can be used to easily export held or generated data from a child view:
-
-Output method added inside of view script:
-```javascript
-v.output = () => {
-    return {
-        text: v.find('input').value,
-        done: v.self.classList.contains('done'),
-    }
-}
-```
-
-Running the output method and returning it's data for a single view from outside the component:
-```javascript
-let result = v.find('li').this.output()
-```
-
-Running the output method and returning it's data for a multiple views from outside the component:
-```javascript
-let results = Object.values(v.findAll('li')).map(item => item.this.output())
-```
-
-
-
-
-
 
 **An Example of a View**
 
@@ -164,6 +136,39 @@ Using the above view to generate a page with 10 buttons:
 ```
 
 ![image](https://user-images.githubusercontent.com/13086157/198755403-968328db-4500-4d7a-b9e2-ecaef9dbd041.png)
+
+
+
+**Retrieving Child View Data**
+
+When a view is added and it's script ran, the actual HTML Element output by that view will hold a handy `this` variable that holds the view values. This can be used to easily export held or generated data from a child view:
+
+Output method added inside of view script:
+```javascript
+v.output = () => {
+    return {
+        text: v.find('input').value,
+        done: v.self.classList.contains('done'),
+    }
+}
+```
+
+Running the output method and returning it's data for a single view from outside the component:
+```javascript
+let result = v.find('li').this.output()
+```
+
+Running the output method and returning it's data for a multiple views from outside the component:
+```javascript
+let results = Object.values(v.findAll('li')).map(item => item.this.output())
+```
+
+
+This is used in the todo list example:
+
+![image](https://user-images.githubusercontent.com/13086157/198842276-e03baf5a-35fa-43cf-b2c1-65077d8196c8.png)
+
+
 
 
 **TODO:**
