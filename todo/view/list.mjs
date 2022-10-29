@@ -31,9 +31,8 @@ export default {
             a.scripts() //todo think of best way to auto run this after views have been output
         })
         v.find('button.export').addEventListener('click', () => {
-            // let results = Object.values(v.findAll('li')).map(item => item.this.output())
-            let result = v.find('li').this.output()
-            console.log(result)
+            let results = Object.values(v.findAll('li')).map(item => item.this.output())
+            console.log(results)
         })
     }
 }
