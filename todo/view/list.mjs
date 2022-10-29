@@ -19,9 +19,9 @@ export default {
     //the default HTML view to show
     view: v => {
         return `
-        <ul></ul>
         <button class="add">+</button>
         <button class="export">export</button>
+        <ul></ul>
         `
     },
     //script which runs when the element is added to the page from the `a.render` method
