@@ -115,6 +115,10 @@ Using the above view to generate a page with 10 buttons:
     })
 ```
 
+![image](https://user-images.githubusercontent.com/13086157/198755403-968328db-4500-4d7a-b9e2-ecaef9dbd041.png)
+
+
+
 **Default View Variables**
 
 In addition to any variables set in the `view.values` section, each view has access to the following:
