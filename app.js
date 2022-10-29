@@ -52,15 +52,13 @@ window.a = {
             const template = a._view_queue[0]
             a._view_queue.shift()
             template.values.self = a.find(template.values.selector)
+            template.values.find = (query) => {return a.find(query, template.values.self)}
+            template.values.findAll = (query) => {return a.findAll(query, template.values.self)}
             template.view.script(template.values)
         }
     },
-    find: query => {
-        return document.querySelector(query)
-    },
-    findAll: query => {
-        return document.querySelectorAll(query)
-    }
+    find: (query, parent) => (parent ?? document).querySelector(query),
+    findAll: (query, parent) => (parent ?? document).querySelectorAll(query)
 }
 
 const event = new Event('a_init');
