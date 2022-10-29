@@ -12,20 +12,32 @@ export default {
     //enter any css here. ${v.selector} is a class selector that is unique to this element
     style: v => {
         return `
-        ${v.selector}.done input{
-            color: gray;
+        ${v.selector} span:after{
+            padding: 0 1em;
+            cursor: pointer;
+            color: green;
+            content: "✔"
         }
+        ${v.selector}.done span:after{
+            color: red;
+            content: "❌"
+        }
+        
         `
     },
     //the default HTML view to show
     view: v => {
-        return `<input placeholder="${v.placeholder}" /><span>✔</span>`
+        return `<button>-</button><input placeholder="${v.placeholder}" /><span></span>`
     },
     //script which runs when the element is added to the page from the `a.render` method
     script: v => {
 
         v.find('span').addEventListener('click', () => {
             v.self.classList.toggle('done')
+            v.find('input').disabled = v.self.classList.contains('done')
+        })
+        v.find('button').addEventListener('click', () => {
+            v.self.parentNode.removeChild(v.self);
         })
 
 

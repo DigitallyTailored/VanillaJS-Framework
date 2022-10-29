@@ -6,15 +6,63 @@ As usual the aim is to facilitate reusable components whilst not drifting too fa
 
 Unlike previous similar projects I've worked on, the driver of this framework is entirely JS with no additional controls available from within HTML. This is to simplify the process of using the framework, making it more consistent between implementations.  
 
-**TODO:**
+**Default App Variables and Methods**
 
-[ ] The script queue may be processed early (before the HTML is added) if using multiple asynchronous `a.render` calls. Make script queues unique to their caller 
+```javascript
+a.load(view_location, optional_view_name) //load a view to be used, view name, used to call a view, is optional and will default to the filename minus the extension
+a.v(view_name, optional_view_data) //
+a.view(view_name, optional_view_data) //same as above
 
-[ ] `v.refresh` helper method for regenerating a view with any updated variables. This will likely not support nested views.
+a.render(optional_target, output) // if only output is provided then the output will be renedered to to the app target (usually document.body)  
 
-[ ] Make view object classes optional in case they're not needed.
+a.scripts() //Run all queued scripts from views generated with `a.v()` or `a.view()`. Views need to have been added to the page before running this. This method is likely to be removed/changed to simplify implementation
 
-[ ] Move view css to a separate output section. They are currently attached to the HTML output of each component
+a.find(css_style_query) //a query selector which searches the app target (by defaul the `document`), works like document.querySelector
+a.findAll(css_style_query) //a query selector which searches the app target (by defaul the `document`), works like document.querySelectorAll
+```
+
+**Default View Variables and Methods**
+
+In addition to any variables set in the `view.values` section, each view has access to the following:
+
+```javascript
+v.self //a reference to the view HTMLElement
+v.find(css_style_query) //a query selector which searches this view, works like v.self.querySelector
+v.findAll(css_style_query) //a query selector which searches this view, works like v.self.querySelectorAll
+
+v._uid //a unique id which each view is given e.g. `au-1`. This value is incremented as opposed to randmized for cleaner HTML output
+v.selector //a css selector based on the unique id e.g. `.au-1` which could also be used in JS if need be
+v.output() //does not exist by default but is the recommended way to provide output from a view
+```
+
+**Retrieving Child View Data**
+
+When a view is added and it's script ran, the actual HTML Element output by that view will hold a handy `this` variable that holds the view values. This can be used to easily export held or generated data from a child view:
+
+Output method added inside of view script:
+```javascript
+v.output = () => {
+    return {
+        text: v.find('input').value,
+        done: v.self.classList.contains('done'),
+    }
+}
+```
+
+Running the output method and returning it's data for a single view from outside the component:
+```javascript
+let result = v.find('li').this.output()
+```
+
+Running the output method and returning it's data for a multiple views from outside the component:
+```javascript
+let results = Object.values(v.findAll('li')).map(item => item.this.output())
+```
+
+
+
+
+
 
 **An Example of a View**
 
@@ -118,17 +166,12 @@ Using the above view to generate a page with 10 buttons:
 ![image](https://user-images.githubusercontent.com/13086157/198755403-968328db-4500-4d7a-b9e2-ecaef9dbd041.png)
 
 
+**TODO:**
 
-**Default View Variables**
+[ ] The script queue may be processed early (before the HTML is added) if using multiple asynchronous `a.render` calls. Make script queues unique to their caller
 
-In addition to any variables set in the `view.values` section, each view has access to the following:
+[ ] `v.refresh` helper method for regenerating a view with any updated variables. This will likely not support nested views.
 
-```javascript
-v.self //a reference to the view HTMLElement
-v.find() //a query selector which searches this view, works like v.self.querySelector
-findAll() //a query selector which searches this view, works like v.self.querySelectorAll
+[ ] Make view object classes optional in case they're not needed.
 
-v._uid //a unique id which each view is given e.g. `au-1`. This value is incremented as opposed to randmized for cleaner HTML output
-v.selector //a css selector based on the unique id e.g. `.au-1` which could also be used in JS if need be
-
-```
+[ ] Move view css to a separate output section. They are currently attached to the HTML output of each component
