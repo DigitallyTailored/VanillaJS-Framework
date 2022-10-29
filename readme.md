@@ -166,7 +166,7 @@ let results = Object.values(v.findAll('li')).map(item => item.this.output())
 
 This is used in the todo list example:
 
-![image](https://user-images.githubusercontent.com/13086157/198842276-e03baf5a-35fa-43cf-b2c1-65077d8196c8.png)
+![image](https://user-images.githubusercontent.com/13086157/198842914-86c7b14e-492c-4954-8d59-5449de130ff6.png)
 
 
 
