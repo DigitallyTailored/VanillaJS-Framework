@@ -16,7 +16,7 @@ window.a = {
         }
     },
     load: (module, name = null) => {
-        name = name ?? module.substring(module.lastIndexOf('/')+1);
+        name = name ?? module.split("/").pop().split(".")[0];
         a._load_count++
         import(`${module}`).then(
             imported => {
@@ -48,10 +48,14 @@ window.a = {
             target = a.target
         }
         target.innerHTML = output
+        a.scripts()
+    },
+    scripts: () => {
         while (a._view_queue.length > 0) {
             const template = a._view_queue[0]
             a._view_queue.shift()
             template.values.self = a.find(template.values.selector)
+            template.values.self.this = template.values
             template.values.find = (query) => {return a.find(query, template.values.self)}
             template.values.findAll = (query) => {return a.findAll(query, template.values.self)}
             template.view.script(template.values)
