@@ -4,9 +4,10 @@ document.addEventListener('a_init', (e) => {
 
     a.ready(() => {
 
-        a.render(
-            a.v('list')
-        )
+        // a.render(
+        //     a.v('list')
+        // )
+        a.target.insertAdjacentElement('beforeend', a.v('list'))
 
     })
 

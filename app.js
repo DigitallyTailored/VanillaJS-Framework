@@ -37,9 +37,20 @@ window.a = {
         values = {...a._views[name].values(values), ...values}
         values._uid = a.uid()
         values.selector = '.' + values._uid
-        const elementType = a._views[name].element(values) ?? 'div'
-        let element = `<${elementType} class="${values._uid}">${a._views[name].view(values) + `<style>` + a._views[name].style(values) + `</style>`}</${elementType}>`
-        a._view_queue.push({view: a._views[name], name: name, values: values})
+        const element = document.createElement(a._views[name].element(values) ?? 'div')
+        element.classList.add(values._uid)
+
+        values.self = element
+        values.self.this = values
+        values.find = (query) => {return a.find(query, element)}
+        values.findAll = (query) => {return a.findAll(query, element)}
+
+        element.innerHTML = `${a._views[name].view(values) + `<style>` + a._views[name].style(values) + `</style>`}`
+
+        a._views[name].script(values)
+        // const elementType = a._views[name].element(values) ?? 'div'
+        // let element = `<${elementType} class="${values._uid}">${a._views[name].view(values) + `<style>` + a._views[name].style(values) + `</style>`}</${elementType}>`
+        // a._view_queue.push({view: a._views[name], name: name, values: values})
         return element
     },
     render: (target, output = null) => {
@@ -51,15 +62,15 @@ window.a = {
         a.scripts()
     },
     scripts: () => {
-        while (a._view_queue.length > 0) {
-            const template = a._view_queue[0]
-            a._view_queue.shift()
-            template.values.self = a.find(template.values.selector)
-            template.values.self.this = template.values
-            template.values.find = (query) => {return a.find(query, template.values.self)}
-            template.values.findAll = (query) => {return a.findAll(query, template.values.self)}
-            template.view.script(template.values)
-        }
+        // while (a._view_queue.length > 0) {
+        //     const template = a._view_queue[0]
+        //     a._view_queue.shift()
+        //     template.values.self = a.find(template.values.selector)
+        //     template.values.self.this = template.values
+        //     template.values.find = (query) => {return a.find(query, template.values.self)}
+        //     template.values.findAll = (query) => {return a.findAll(query, template.values.self)}
+        //     template.view.script(template.values)
+        // }
     },
     find: (query, parent) => (parent ?? document).querySelector(query),
     findAll: (query, parent) => (parent ?? document).querySelectorAll(query)
