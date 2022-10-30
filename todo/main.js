@@ -7,7 +7,9 @@ document.addEventListener('a_init', (e) => {
         // a.render(
         //     a.v('list')
         // )
+        a.target.innerHTML = ``
         a.target.insertAdjacentElement('beforeend', a.v('list'))
+
 
     })
 
