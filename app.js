@@ -37,8 +37,10 @@ window.a = {
         values = {...a._views[name].values(values), ...values}
         values._uid = a.uid()
         values.selector = '.' + values._uid
+        values.view = `[data-view="${name}"]`
         const element = document.createElement(a._views[name].element(values) ?? 'div')
         element.classList.add(values._uid)
+        element.dataset.view=name
         values.self = element
         values.self.this = values
         values.find = (query) => {

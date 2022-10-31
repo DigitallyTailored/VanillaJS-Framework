@@ -11,8 +11,12 @@ export default {
     //enter any css here. ${v.selector} is a class selector that is unique to this element
     style: v => {
         return `
-        ${v.selector} {
-            
+        ${v.view} h1, ${v.view} button {
+            font-size: 2em;
+            padding: 5px;
+            margin: 5px;
+            min-width: 50px;
+            border-radius: 16px;
         }
         `
     },
@@ -30,7 +34,8 @@ export default {
             a.append(v.find('ul'), a.v('list-item'))
         })
         v.find('button.export').addEventListener('click', () => {
-            let results = Object.values(v.findAll('li')).map(item => item.this.output())
+            const views = v.findAll('[data-view="list-item"]')
+            let results = Object.values(views).map(item => item.this.output())
             console.log(results)
         })
     }

@@ -12,15 +12,22 @@ export default {
     //enter any css here. ${v.selector} is a class selector that is unique to this element
     style: v => {
         return `
-        ${v.selector} span:after{
+        ${v.view} span:after{
             padding: 0 1em;
             cursor: pointer;
             color: green;
             content: "✔"
         }
-        ${v.selector}.done span:after{
+        ${v.view}.done span:after{
             color: red;
             content: "❌"
+        }
+        ${v.view} input, ${v.view} button, ${v.view} span {
+            font-size: 2em;
+            padding: 5px;
+            margin: 5px;
+            min-width: 50px;
+            border-radius: 16px;
         }
         `
     },
