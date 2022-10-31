@@ -22,7 +22,6 @@ export default {
             color: red;
             content: "❌"
         }
-        
         `
     },
     //the default HTML view to show

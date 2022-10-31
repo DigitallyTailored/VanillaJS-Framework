@@ -4,12 +4,11 @@ document.addEventListener('a_init', (e) => {
 
     a.ready(() => {
 
-        // a.render(
-        //     a.v('list')
-        // )
-        a.target.innerHTML = ``
-        a.target.insertAdjacentElement('beforeend', a.v('list'))
-
+        const target = document.body
+        a.out(target, [
+            `<h1>List: </h1>`,
+            a.v('list')
+        ])
 
     })
 

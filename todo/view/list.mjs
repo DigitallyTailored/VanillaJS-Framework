@@ -27,8 +27,7 @@ export default {
     //script which runs when the element is added to the page from the `a.render` method
     script: v => {
         v.find('button.add').addEventListener('click', () => {
-            v.find('ul').insertAdjacentHTML('beforeend', a.v('list-item'))
-            a.scripts() //todo think of best way to auto run this after views have been output
+            a.append(v.find('ul'), a.v('list-item'))
         })
         v.find('button.export').addEventListener('click', () => {
             let results = Object.values(v.findAll('li')).map(item => item.this.output())

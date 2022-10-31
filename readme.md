@@ -13,8 +13,8 @@ a.load(view_location, optional_view_name) //load a view to be used, view name, u
 a.v(view_name, optional_view_data) //
 a.view(view_name, optional_view_data) //same as above
 
-a.render(optional_target, output) // if only output is provided then the output will be renedered to to the app target (usually document.body)  
-
+a.out(optional_target, output) // outputs an element, or array of elements to the target. An element can also be dynamically created by providing an html string. if only output is provided then the output will be renedered to to the app target (usually document.body)  
+a.append(optional_target, output) // same as above but appends to target end without clearing
 a.scripts() //Run all queued scripts from views generated with `a.v()` or `a.view()`. Views need to have been added to the page before running this. This method is likely to be removed/changed to simplify implementation
 
 a.find(css_style_query) //a query selector which searches the app target (by defaul the `document`), works like document.querySelector
@@ -119,26 +119,6 @@ export default {
 }
 ```
 
-Using the above view to generate a page with 10 buttons:
-
-```javascript
-    a.ready(() => {
-
-        let output = ``
-        for (let i = 0; i < 10; i++) {
-            output += a.v('button', {text: 'Button ' + (i+1)})
-        }
-
-        a.render(
-            output
-        )
-    })
-```
-
-![image](https://user-images.githubusercontent.com/13086157/198755403-968328db-4500-4d7a-b9e2-ecaef9dbd041.png)
-
-
-
 **Retrieving Child View Data**
 
 When a view is added and it's script ran, the actual HTML Element output by that view will hold a handy `this` variable that holds the view values. This can be used to easily export held or generated data from a child view:
@@ -172,10 +152,6 @@ This is used in the todo list example:
 
 
 **TODO:**
-
-[ ] The script queue may be processed early (before the HTML is added) if using multiple asynchronous `a.render` calls. Make script queues unique to their caller
-
-[ ] `v.refresh` helper method for regenerating a view with any updated variables. This will likely not support nested views.
 
 [ ] Make view object classes optional in case they're not needed.
 
