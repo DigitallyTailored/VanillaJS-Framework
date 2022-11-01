@@ -45,6 +45,7 @@ export default {
             const views = v.findAll('[data-view="list-item"]')
             let results = Object.values(views).map(item => item.this.output())
             console.log(results)
+            alert(JSON.stringify(results))
         })
 
     }

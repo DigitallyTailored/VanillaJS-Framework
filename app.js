@@ -83,5 +83,5 @@ window.a = {
     findAll: (query, parent) => (parent ?? document).querySelectorAll(query),
 }
 
-const event = new Event('a_init');
+const event = new Event('aInit');
 document.dispatchEvent(event);
