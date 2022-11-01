@@ -30,13 +30,22 @@ export default {
     },
     //script which runs when the element is added to the page from the `a.render` method
     script: v => {
-        v.find('button.add').addEventListener('click', () => {
+
+        v.addItem = () => {
             a.append(v.find('ul'), a.v('list-item'))
+        }
+
+        v.addItem()
+
+        v.find('button.add').addEventListener('click', () => {
+            v.addItem()
         })
+
         v.find('button.export').addEventListener('click', () => {
             const views = v.findAll('[data-view="list-item"]')
             let results = Object.values(views).map(item => item.this.output())
             console.log(results)
         })
+
     }
 }

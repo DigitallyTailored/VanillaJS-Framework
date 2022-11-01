@@ -50,7 +50,6 @@ window.a = {
             return a.findAll(query, element)
         }
         element.innerHTML = `${a._views[name].view(values) + `<style>` + a._views[name].style(values) + `</style>`}`
-        a._views[name].script(values)
         return element
     },
     append(target, elements) {
@@ -72,6 +71,11 @@ window.a = {
                 target.insertAdjacentHTML('beforeend', element)
             } else {
                 target.insertAdjacentElement('beforeend', element)
+            }
+            if(element?.dataset?.view){
+                element.this.parentView = target.closest('[data-view]')?.this
+                element.this.parent = target
+                a._views[element.dataset.view].script(element.this)
             }
         }))
     },

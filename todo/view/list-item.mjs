@@ -37,13 +37,20 @@ export default {
     },
     //script which runs when the element is added to the page from the `a.render` method
     script: v => {
+        v.find('input').focus()
 
         v.find('span').addEventListener('click', () => {
             v.self.classList.toggle('done')
             v.find('input').disabled = v.self.classList.contains('done')
         })
+
         v.find('button').addEventListener('click', () => {
             v.self.parentNode.removeChild(v.self);
+        })
+        v.find('input').addEventListener('keypress', (event) => {
+            if(event.keyCode === 13) {
+                v.parentView.addItem()
+            }
         })
 
 
