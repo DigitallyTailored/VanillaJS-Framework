@@ -1,23 +1,28 @@
-# Vanilla JS Web Framework
+# Act - A Vanilla JaveScript Web Framework
 
-No transpiler. Works anywhere.
+No transpiler. Works anywhere. Tiny.
 
-Another attempt at a tiny Vanilla JS framework (no transpiler required) which is just over 1KB in size when compressed.
+The aim is to facilitate reusable components whilst not drifting too far from normal JS syntax and HTML standards. While there is no `reactive` element planned, the idea is that components (views as we call them) can be accessed and updated from within with direct references, much simpler and quicker than potentially expensive DOM diffing. Additionally, unique view data is directly attached to each HTML Element for easy access even outside of the framework.
 
-As usual the aim is to facilitate reusable components whilst not drifting too far from normal JS syntax and HTML standards.
+Unlike previous similar projects I've worked on, the driver of this framework is entirely JS with no additional controls available from within HTML beyond the initial view HTML. This is to simplify the process of using the framework, making it more consistent between implementations.  
 
-Unlike previous similar projects I've worked on, the driver of this framework is entirely JS with no additional controls available from within HTML. This is to simplify the process of using the framework, making it more consistent between implementations.  
+Another very large consideration was reducing the amount of HTML required for output and providing an easy way to avoid div soup form the start by (optionally) setting an element type from within the view and keeping any ids and hashes simple from the get go.
+
+The below is the HTML output for a `div` view containing two nested `li` views along with unique hashed styles and multiple events for each view:
+
+![image](https://user-images.githubusercontent.com/13086157/200991498-74a87b76-a25e-42dd-a3d7-e9b85a229b01.png)
+
+Simple!
 
 **Default App Variables and Methods**
 
 ```javascript
-a.load(view_location, optional_view_name) //load a view to be used, view name, used to call a view, is optional and will default to the filename minus the extension
-a.v(view_name, optional_view_data) //
+a.load(view_location, optional_view_name) // load a view to be used. View name, used to call a view, is optional and will default to the filename minus the extension if not provided
+a.v(view_name, optional_view_data) // returns the HTML element for a view, handling any styling and scripts, ready to be placed with a.out/append or v.out/append
 a.view(view_name, optional_view_data) //same as above
 
-a.out(optional_target, output) // outputs an element, or array of elements to the target. An element can also be dynamically created by providing an html string. if only output is provided then the output will be renedered to to the app target (usually document.body)  
+a.out(optional_target, output) // outputs an element, or array of elements to the target as HTML. An element can also be dynamically created by providing an html string. If only output is provided then the output will be renedered to to the app target (defaulting to document.body)  
 a.append(optional_target, output) // same as above but appends to target end without clearing
-a.scripts() //Run all queued scripts from views generated with `a.v()` or `a.view()`. Views need to have been added to the page before running this. This method is likely to be removed/changed to simplify implementation
 
 a.find(css_style_query) //a query selector which searches the app target (by defaul the `document`), works like document.querySelector
 a.findAll(css_style_query) //a query selector which searches the app target (by defaul the `document`), works like document.querySelectorAll
@@ -33,7 +38,9 @@ v.find(css_style_query) //a query selector which searches this view, works like 
 v.findAll(css_style_query) //a query selector which searches this view, works like v.self.querySelectorAll
 
 v._uid //a unique id which each view is given e.g. `au-1`. This value is incremented as opposed to randmized for cleaner HTML output
-v.selector //a css selector based on the unique id e.g. `.au-1` which could also be used in JS if need be
+v.view  //a css selector based on the view name, allowing you to style all instances of a view from one place
+v.selector //an alternative css selector based on the unique id e.g. `.au-1`
+
 v.output() //does not exist by default but is the recommended way to provide output from a view
 ```
 
@@ -42,16 +49,17 @@ v.output() //does not exist by default but is the recommended way to provide out
 
 ```javascript
 export default {
-    //sets the element type - handy to avoid div soup!
+    // sets the element type - handy to avoid div soup!
     element: v => {
         return `div`
     },
-    //set additional default values for this view
+    // set additional default values for this view
     values: v => {
         return {
         }
     },
-    //enter any css here. ${v.selector} is a class selector that is unique to this element
+    // enter any css here. ${v.selector} is a class selector that is unique to this element
+    // ${v.view} can instead be used to provide a style for all elements created with this view. With this there will be no duplicate entries either
     style: v => {
         return `
         ${v.selector} {
@@ -59,11 +67,11 @@ export default {
         }
         `
     },
-    //the default HTML view to show
+    // the default HTML view to show
     view: v => {
         return ``
     },
-    //script which runs when the element is added to the page from the `a.render` method
+    // script which runs when the element is added to the page from the `a.render` method
     script: v => {
 
     }
@@ -71,7 +79,7 @@ export default {
 ```
 
 
-**A Basic Stylized Button View**
+**A Basic Stylized Button View With an Inbuilt Click Counter**
 ```javascript
 export default {
     element: v => {
@@ -85,7 +93,7 @@ export default {
     },
     style: v => {
         return `
-        ${v.selector} {
+        ${v.view} {
             background-color: white;
             border-radius: 1em;
             padding: 0.5em;
@@ -94,10 +102,10 @@ export default {
             box-shadow: 5px 5px 10px lightgray, -5px -5px 10px white;
             transition: all 0.2s ease;
         }
-        ${v.selector}:hover {
+        ${v.view}:hover {
             box-shadow: 5px 5px 20px lightgray, -5px -5px 20px white;
         }
-        ${v.selector}:active {
+        ${v.view}:active {
             scale: 0.97;
         }
         `
@@ -123,7 +131,7 @@ export default {
 
 **Retrieving Child View Data**
 
-When a view is added and it's script ran, the actual HTML Element output by that view will hold a handy `this` variable that holds the view values. This can be used to easily export held or generated data from a child view:
+When a view is added and before it's script is ran, the actual HTML Element output by that view will hold a handy `this` variable that holds the view values. This can be used to easily export held or generated data from a child view:
 
 Output method added inside of view script:
 ```javascript
@@ -135,12 +143,12 @@ v.output = () => {
 }
 ```
 
-Running the output method and returning it's data for a single view from outside the component:
+Running the output method and returning it's data for a single view from a parent component:
 ```javascript
 let result = v.find('li').this.output()
 ```
 
-Running the output method and returning it's data for a multiple views from outside the component:
+Running the output method and returning it's data for multiple views from a parent component:
 ```javascript
 let results = Object.values(v.findAll('li')).map(item => item.this.output())
 ```
@@ -155,6 +163,4 @@ This is used in the todo list example:
 
 **TODO:**
 
-[ ] Make view object classes optional in case they're not needed.
-
-[ ] Move view css to a separate output section. They are currently attached to the HTML output of each component
+All done!
