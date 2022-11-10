@@ -1,4 +1,4 @@
-# Act - A Vanilla JaveScript Web Framework
+# Act - A Vanilla JavaScript Web Framework
 
 No transpiler. Works anywhere. Tiny.
 
@@ -6,7 +6,7 @@ The aim is to facilitate reusable components whilst not drifting too far from no
 
 Unlike previous similar projects I've worked on, the driver of this framework is entirely JS with no additional controls available from within HTML beyond the initial view HTML. This is to simplify the process of using the framework, making it more consistent between implementations.  
 
-Another very large consideration was reducing the amount of HTML required for output and providing an easy way to avoid div soup form the start by (optionally) setting an element type from within the view and keeping any ids and hashes simple from the get go.
+Another very large consideration was reducing the amount of HTML required for output and providing an easy way to avoid div soup from the start by (optionally) setting an element type from within the view and keeping any ids and hashes simple from the get go.
 
 The below is the HTML output for a `div` view containing two nested `li` views along with unique hashed styles and multiple events for each view:
 
