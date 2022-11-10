@@ -35,8 +35,6 @@ export default {
             a.append(v.find('ul'), a.v('list-item'))
         }
 
-        v.addItem()
-
         v.find('button.add').addEventListener('click', () => {
             v.addItem()
         })
@@ -47,6 +45,8 @@ export default {
             console.log(results)
             alert(JSON.stringify(results))
         })
+
+        v.addItem()
 
     }
 }

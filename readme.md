@@ -1,5 +1,7 @@
 # Vanilla JS Web Framework
 
+No transpiler. Works anywhere.
+
 Another attempt at a tiny Vanilla JS framework (no transpiler required) which is just over 1KB in size when compressed.
 
 As usual the aim is to facilitate reusable components whilst not drifting too far from normal JS syntax and HTML standards.

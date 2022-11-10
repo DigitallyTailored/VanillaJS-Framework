@@ -1,3 +1,4 @@
+//Act - Vanilla JavaScript Framework
 window.a = {
     target: document.body,
     _views: {},
@@ -40,7 +41,7 @@ window.a = {
         values.view = `[data-view="${name}"]`
         const element = document.createElement(a._views[name].element(values) ?? 'div')
         element.classList.add(values._uid)
-        element.dataset.view=name
+        element.dataset.view = name
         values.self = element
         values.self.this = values
         values.find = (query) => {
@@ -49,7 +50,6 @@ window.a = {
         values.findAll = (query) => {
             return a.findAll(query, element)
         }
-        element.innerHTML = `${a._views[name].view(values) + `<style>` + a._views[name].style(values) + `</style>`}`
         return element
     },
     append(target, elements) {
@@ -72,15 +72,28 @@ window.a = {
             } else {
                 target.insertAdjacentElement('beforeend', element)
             }
-            if(element?.dataset?.view){
+            if (element?.dataset?.view) {
                 element.this.parentView = target.closest('[data-view]')?.this
                 element.this.parent = target
+                element.this.selector = (element.this.parentView?.selector ? element.this.parentView.selector + ' ' : '') + element.this.selector
+                element.innerHTML = a._views[element.dataset.view].view(element.this)
+                const hash = a.hash(a._views[element.dataset.view].style(element.this))
+                const styleElement = document.createElement('style')
+                styleElement.dataset.hash = hash
+                styleElement.innerHTML = a._views[element.dataset.view].style(element.this)
+                if(!element.this.parent.querySelector(`:scope > style[data-hash="${hash}"]`)){
+                    target.insertAdjacentElement('afterbegin', styleElement)
+                }
+                target.insertAdjacentElement('beforeend', element)
                 a._views[element.dataset.view].script(element.this)
             }
         }))
     },
     find: (query, parent) => (parent ?? document).querySelector(query),
     findAll: (query, parent) => (parent ?? document).querySelectorAll(query),
+    hash: (str) => {
+        return str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0)) | 0, 0)
+    }
 }
 
 const event = new Event('aInit');

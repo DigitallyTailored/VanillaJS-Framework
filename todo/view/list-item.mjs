@@ -53,7 +53,6 @@ export default {
             }
         })
 
-
         v.output = () => {
             return {
                 text: v.find('input').value,
